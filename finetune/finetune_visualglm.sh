@@ -3,7 +3,7 @@
  # @Author: miaomiao612 dddoctorr612@gmail.com
  # @Date: 2023-06-20 19:16:23
  # @LastEditors: miaomiao612 dddoctorr612@gmail.com
- # @LastEditTime: 2023-06-20 19:59:10
+ # @LastEditTime: 2023-06-22 13:34:40
  # @FilePath: \VisualGLM-6B\finetune\finetune_visualglm.sh
  # @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 ###
@@ -26,15 +26,15 @@ OPTIONS_NCCL="NCCL_DEBUG=info NCCL_IB_DISABLE=0 NCCL_NET_GDR_LEVEL=2"
 HOST_FILE_PATH="hostfile"
 HOST_FILE_PATH="hostfile_single"
 
-train_data="./fewshot-data/dataset.json"
-eval_data="./fewshot-data/dataset.json"
+train_data="./fewshot-data/train.json"
+eval_data="./fewshot-data/train.json"
 
 
 gpt_options=" \
        --experiment-name finetune-$MODEL_TYPE \
        --model-parallel-size ${MP_SIZE} \
        --mode finetune \
-       --train-iters 300 \
+       --train-iters 200 \
        --resume-dataloader \
        $MODEL_ARGS \
        --train-data ${train_data} \
@@ -43,7 +43,7 @@ gpt_options=" \
        --lr-decay-style cosine \
        --warmup .02 \
        --checkpoint-activations \
-       --save-interval 300 \
+       --save-interval 100 \
        --eval-interval 10000 \
        --save "./checkpoints" \
        --split 1 \
@@ -51,10 +51,10 @@ gpt_options=" \
        --eval-batch-size 8 \
        --zero-stage 1 \
        --lr 0.0001 \
-       --batch-size 4 \
+       --batch-size 16 \
        --skip-init \
        --fp16 \
-       --use_ptuning
+       --use_qlora
 "
 
 
